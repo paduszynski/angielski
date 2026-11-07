@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Angielski – fiszki dla dzieci</title>
-<meta name="version" content="1.0">
+<meta name="version" content="1.1">
 <meta name="description" content="Angielski – fiszki ze zdjęciami i wymową dla dzieci z 2 klasy: zwierzęta na farmie i małe zwierzątka.">
 <meta name="theme-color" content="#2c5440">
 <link rel="manifest" href="manifest.webmanifest">
@@ -109,7 +109,13 @@ main{padding:12px 0 28px}
 .card.flipped .card-inner{transform:rotateY(180deg)}
 .card.instant .card-inner{transition:none}
 .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:14px 10px}
+.front{transform:rotateY(0deg)}
 .back{transform:rotateY(180deg);border:2px dashed var(--chalk-dim);border-radius:14px 10px 16px 11px}
+/* backface-visibility alone is not reliable (some browsers show the mirrored front through the back), so the hidden side is also hidden halfway through the flip */
+.face{transition:visibility 0s linear .14s}
+.card:not(.flipped) .back,.card.flipped .front{visibility:hidden}
+.card.instant .face{transition:none}
+.face *{backface-visibility:hidden;-webkit-backface-visibility:hidden}
 .card.ok .back{border-color:var(--green)}
 .card.bad .back{border-color:var(--pink)}
 
@@ -213,7 +219,7 @@ footer{color:var(--chalk-soft);text-align:center;font-size:1rem;padding:8px 14px
 
 <header class="top">
   <div class="wrap">
-    <div class="brand chalk"><span class="logo">Ab</span>Angielski<span class="ver" title="Wersja 1.0">1.0</span></div>
+    <div class="brand chalk"><span class="logo">Ab</span>Angielski<span class="ver" title="Wersja 1.1">1.1</span></div>
     <button class="menu-btn" id="menu-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="menu">
       <span class="menu-title" id="menu-title"></span>
       <span class="burger" aria-hidden="true"><i></i><i></i><i></i></span>
@@ -313,7 +319,7 @@ footer{color:var(--chalk-soft);text-align:center;font-size:1rem;padding:8px 14px
 </main>
 
 <footer>
-  Angielski 1.0 · kliknij zdjęcie w „Moich słówkach”, żeby usłyszeć słowo · postęp zapisuje się w tej przeglądarce
+  Angielski 1.1 · kliknij zdjęcie w „Moich słówkach”, żeby usłyszeć słowo · postęp zapisuje się w tej przeglądarce
   <details class="credits">
     <summary>Zdjęcia: Wikimedia Commons (autorzy i licencje)</summary>
     <ul id="credits"></ul>
