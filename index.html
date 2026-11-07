@@ -1,0 +1,684 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Angielski – fiszki dla dzieci</title>
+<meta name="version" content="1.0">
+<meta name="description" content="Angielski – fiszki ze zdjęciami i wymową dla dzieci z 2 klasy: zwierzęta na farmie i małe zwierzątka.">
+<meta name="theme-color" content="#2c5440">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Angielski">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+/* Tablica kredowa: green board in a wooden frame, chalk writing, photos pinned with magnets. Phone first. */
+:root{
+  --board:#2c5440; --board-deep:#21402f; --wood:#8a5a2e; --wood-dark:#5f3b1a;
+  --chalk:#f4f1e6; --chalk-soft:rgba(244,241,230,.72); --chalk-dim:rgba(244,241,230,.32); --chalk-line:rgba(244,241,230,.55);
+  --yellow:#f7e27a; --pink:#f7a8b8; --green:#a9edb7; --orange:#ffc48a; --blue:#a6d8ff;
+  --paper:#fffdf5; --paper-ink:#2e3a33; --magnet:#d33a2c;
+  --l1:var(--pink); --l2:var(--orange); --l3:var(--yellow); --l4:var(--green);
+  --hand:"Patrick Hand","Comic Sans MS","Segoe Print",cursive;
+  --frame:clamp(6px,1.4vw,16px);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{background:var(--wood)}
+html,body{margin:0}
+body{
+  font-family:var(--hand);font-size:19px;line-height:1.3;color:var(--chalk);
+  min-height:100svh;-webkit-tap-highlight-color:transparent;
+  background:var(--board);
+  background-image:
+    radial-gradient(ellipse 60% 40% at 25% 15%,rgba(255,255,255,.07),transparent 70%),
+    radial-gradient(ellipse 50% 35% at 85% 70%,rgba(255,255,255,.05),transparent 70%),
+    radial-gradient(ellipse 40% 30% at 10% 90%,rgba(255,255,255,.04),transparent 70%);
+  background-attachment:fixed;
+  border:var(--frame) solid var(--wood);
+  box-shadow:inset 0 0 0 2px var(--wood-dark),inset 0 0 40px rgba(0,0,0,.35);
+}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,[tabindex]:focus-visible,summary:focus-visible{outline:3px dashed var(--yellow);outline-offset:3px}
+a{color:var(--blue)}
+.wrap{max-width:1500px;margin:0 auto;padding-left:max(14px,env(safe-area-inset-left,0px));padding-right:max(14px,env(safe-area-inset-right,0px))}
+.hidden{display:none !important}
+.chalk{text-shadow:0 0 1px rgba(244,241,230,.45)}
+
+/* ---------- header + burger menu ---------- */
+header.top{position:relative;z-index:10;border-bottom:2px solid var(--chalk-line)}
+header .wrap{display:flex;align-items:center;gap:12px;min-height:58px;padding-block:6px;position:relative}
+.brand{display:flex;align-items:center;gap:8px;font-size:1.7rem;line-height:1;flex:none}
+.logo{width:38px;height:38px;border:2px dashed var(--chalk);border-radius:50%;display:grid;place-items:center;font-size:1.15rem;transform:rotate(-8deg)}
+.ver{font-size:.8rem;color:var(--yellow);border:1.5px solid var(--yellow);border-radius:52% 46% 55% 47%;padding:0 6px;transform:rotate(-6deg);align-self:flex-start}
+.menu-btn{margin-left:auto;display:flex;align-items:center;gap:10px;border:2px solid var(--chalk);background:transparent;border-radius:9px 13px 8px 12px;padding:5px 10px;font-size:1.15rem;min-width:0}
+.menu-title{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-decoration:underline wavy var(--yellow) 1.5px;text-underline-offset:5px}
+.burger{display:flex;flex-direction:column;gap:5px;width:22px;flex:none}
+.burger i{display:block;height:3px;border-radius:3px;background:var(--chalk);transition:transform .2s,opacity .2s}
+.burger i:nth-child(1){transform:rotate(-3deg)} .burger i:nth-child(3){transform:rotate(2deg);width:80%}
+.menu-btn[aria-expanded="true"] .burger i:nth-child(1){transform:translateY(8px) rotate(45deg)}
+.menu-btn[aria-expanded="true"] .burger i:nth-child(2){opacity:0}
+.menu-btn[aria-expanded="true"] .burger i:nth-child(3){transform:translateY(-8px) rotate(-45deg);width:100%}
+.menu{position:absolute;right:14px;top:100%;margin-top:8px;z-index:30;background:var(--board-deep);border:2px solid var(--chalk);border-radius:8px 12px 7px 11px;
+  box-shadow:0 14px 30px -10px rgba(0,0,0,.6);padding:8px;display:flex;flex-direction:column;gap:4px;width:min(360px,calc(100vw - 28px))}
+.menu[hidden]{display:none}
+.menu-item{text-align:left;border:0;background:transparent;padding:10px 12px;border-radius:8px;display:flex;flex-direction:column;gap:2px}
+.menu-item b{font-weight:400;font-size:1.35rem;line-height:1.1}
+.menu-item span{color:var(--chalk-soft);font-size:1rem}
+.menu-item:hover{background:rgba(255,255,255,.06)}
+.menu-item[aria-current="true"] b{color:var(--yellow)}
+
+main{padding:12px 0 28px}
+
+/* ---------- layout: phone = stage first, settings below; desktop = settings left ---------- */
+.layout{display:grid;grid-template-columns:1fr;gap:22px;align-items:start}
+.settings{order:2}
+@media (min-width:960px){
+  main{padding-top:26px}
+  .layout{grid-template-columns:290px minmax(0,1fr);gap:40px}
+  .settings{order:0}
+}
+
+.panel{border:2px dashed var(--chalk-line);border-radius:12px 9px 14px 10px;padding:16px 18px}
+.panel h2{margin:0 0 12px;font-size:1.45rem;font-weight:400;color:var(--yellow)}
+.field{margin-bottom:16px}
+.field:last-child{margin-bottom:0}
+.label{display:block;font-size:1rem;color:var(--chalk-soft);margin-bottom:4px}
+.seg{display:flex;flex-wrap:wrap;gap:4px 8px}
+.seg button{border:2px solid transparent;background:transparent;padding:2px 8px;font-size:1.15rem;color:var(--chalk-soft);border-radius:52% 46% 55% 47%}
+.seg button:hover{color:var(--chalk)}
+.seg button[aria-pressed="true"]{color:var(--chalk);border-color:var(--yellow)}
+.seg button:nth-child(even)[aria-pressed="true"]{border-radius:46% 55% 47% 52%}
+.hint{font-size:1rem;color:var(--chalk-soft);margin:6px 0 0}
+
+/* ---------- stage ---------- */
+.stage{display:flex;flex-direction:column;gap:12px;min-width:0}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;width:100%;max-width:600px;margin:0 auto}
+.stat b{display:block;font-size:1.7rem;font-weight:400;line-height:1}
+.stat span{font-size:.9rem;color:var(--chalk-soft)}
+.stat.ok b{color:var(--green)} .stat.bad b{color:var(--pink)} .stat.streak b{color:var(--yellow)}
+
+.play{display:flex;flex-direction:column;gap:14px;align-items:center}
+.card{position:relative;width:100%;max-width:600px;height:clamp(300px,54svh,500px);perspective:1400px;user-select:none;-webkit-user-select:none;cursor:pointer}
+.card-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.3,1.3,.5,1)}
+.card.flipped .card-inner{transform:rotateY(180deg)}
+.card.instant .card-inner{transition:none}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:14px 10px}
+.back{transform:rotateY(180deg);border:2px dashed var(--chalk-dim);border-radius:14px 10px 16px 11px}
+.card.ok .back{border-color:var(--green)}
+.card.bad .back{border-color:var(--pink)}
+
+/* photo pinned with a magnet */
+.photo{position:relative;background:var(--paper);padding:8px 8px 10px;border-radius:3px;box-shadow:2px 8px 18px rgba(0,0,0,.45);transform:rotate(-1.5deg);max-width:100%;flex:0 1 auto;min-height:0;display:flex}
+.photo::before{content:"";position:absolute;top:-11px;left:50%;transform:translateX(-50%);width:26px;height:26px;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,#ff8a7a,var(--magnet) 70%);box-shadow:0 3px 4px rgba(0,0,0,.45);z-index:1}
+.photo img{display:block;width:auto;height:100%;max-width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:2px;background:#ddd}
+.front .photo{height:min(78%,calc((100vw - 60px) * .75 + 18px))}
+.back .photo{height:46%;transform:rotate(2deg)}
+.back .photo::before{background:radial-gradient(circle at 35% 35%,#8fd0ff,#2f7fcf 70%)}
+
+.prompt{margin:0;color:var(--chalk-soft);font-size:1.15rem;text-align:center}
+.word{margin:0;font-size:clamp(2.8rem,13vw,4.4rem);line-height:1;display:flex;align-items:center;gap:14px;text-shadow:0 0 1px rgba(244,241,230,.5)}
+.word u{text-decoration:underline wavy var(--yellow) 2px;text-underline-offset:12px;text-decoration-skip-ink:none}
+.pl{margin:0;font-size:1.35rem;color:var(--chalk-soft)}
+.sentence{margin:0;border:0;background:transparent;font-size:1.15rem;color:var(--blue);padding:2px 6px;display:flex;align-items:center;gap:6px}
+.fb{margin:0;font-size:1.5rem;min-height:1.2em}
+.card.ok .fb{color:var(--green)} .card.bad .fb{color:var(--pink)}
+.badge{position:absolute;top:6px;right:8px;font-size:.95rem;color:var(--yellow);z-index:2}
+
+.say{border:2px solid var(--chalk);background:transparent;border-radius:50%;width:48px;height:48px;display:grid;place-items:center;flex:none;padding:0}
+.say svg{width:24px;height:24px}
+.say.big{width:110px;height:110px;border-width:3px;border-style:dashed}
+.say.big svg{width:54px;height:54px}
+.say:active{transform:scale(.94)}
+.sentence svg{width:18px;height:18px}
+
+.actions{display:flex;gap:12px;justify-content:center;width:100%;max-width:600px;min-height:58px}
+.btn{border:2.5px solid var(--chalk);background:transparent;border-radius:12px 9px 14px 10px;padding:10px 18px;font-size:1.35rem;min-height:56px;flex:1;max-width:280px}
+.btn:active{transform:scale(.97)}
+.btn.primary{border-color:var(--yellow);color:var(--yellow)}
+.btn.ok{border-color:var(--green);color:var(--green)}
+.btn.bad{border-color:var(--pink);color:var(--pink)}
+.kbd-hint{text-align:center;color:var(--chalk-soft);font-size:1rem;margin:0}
+kbd{font-family:inherit;border:1.5px solid var(--chalk-soft);border-bottom-width:3px;border-radius:6px;padding:0 6px}
+@media (hover:none){.kbd-hint{display:none}}
+
+.pop{animation:pop .35s}
+@keyframes pop{50%{transform:scale(1.03)}}
+.shake{animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-8px)}50%{transform:translateX(7px)}75%{transform:translateX(-4px)}}
+
+/* ---------- summary ---------- */
+.summary{text-align:center;padding:26px 16px;display:flex;flex-direction:column;align-items:center;gap:8px}
+.summary h2{font-size:2.2rem;font-weight:400;margin:0;color:var(--chalk)}
+.stars{font-size:3.2rem;letter-spacing:.15em;color:var(--yellow);line-height:1}
+.stars .off{color:var(--chalk-dim)}
+.big-score{font-size:1.2rem;color:var(--chalk-soft)}
+.mistakes{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:6px 0 10px}
+.mistakes button{border:2px solid var(--pink);background:transparent;color:var(--pink);border-radius:52% 46% 55% 47%;padding:2px 14px;font-size:1.3rem}
+.summary .actions{min-height:0}
+
+/* ---------- my words ---------- */
+.words{margin-top:28px}
+.words-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.words-head h2{margin:0}
+.overall{color:var(--chalk-soft)}
+.topic-title{font-size:1.15rem;color:var(--chalk-soft);margin:14px 0 8px}
+.topic-title:first-of-type{margin-top:0}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:12px 10px}
+.tile{border:0;background:transparent;padding:0;display:flex;flex-direction:column;gap:4px;text-align:center}
+.tile img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:3px;border:4px solid var(--paper);box-shadow:1px 4px 8px rgba(0,0,0,.35)}
+.tile span{font-size:1.2rem;line-height:1.1;border-bottom:4px solid transparent;align-self:center;padding:0 4px}
+.tile.l1 span{border-color:var(--l1)} .tile.l2 span{border-color:var(--l2)} .tile.l3 span{border-color:var(--l3)} .tile.l4 span{border-color:var(--l4)}
+.tile.l0 img{filter:saturate(.5) brightness(.85)}
+.words-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:16px}
+.legend{display:flex;gap:6px 14px;flex-wrap:wrap;font-size:1rem;color:var(--chalk-soft)}
+.legend i{display:inline-block;width:18px;height:4px;vertical-align:middle;margin-right:5px;background:var(--chalk-dim)}
+.link{border:0;background:none;color:var(--chalk-soft);padding:2px 0;font-size:1rem;text-decoration:underline wavy;text-underline-offset:4px}
+.link:hover{color:var(--chalk)}
+.confirm{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:1rem}
+.confirm .btn{min-height:0;padding:4px 12px;font-size:1.05rem;flex:none}
+
+footer{color:var(--chalk-soft);text-align:center;font-size:1rem;padding:8px 14px 28px}
+.credits{max-width:70ch;margin:10px auto 0;text-align:left;font-size:.95rem}
+.credits summary{cursor:pointer;text-align:center}
+.credits ul{padding-left:20px;margin:8px 0 0}
+.credits li{margin-bottom:3px}
+
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:50}
+
+/* ---------- desktop ---------- */
+@media (min-width:960px){
+  .stats{gap:12px}
+  .stat b{font-size:2.3rem}
+  .stat span{font-size:1.05rem}
+  .card{height:clamp(380px,58vh,540px)}
+  .front .photo{height:80%}
+  .tiles{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:16px}
+}
+@media (max-width:359px){.menu-title{display:none}.brand{font-size:1.4rem}}
+@media (max-height:640px) and (max-width:700px){.stats{display:none}.card{height:clamp(280px,60svh,420px)}}
+@media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="spk" viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+</svg>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand chalk"><span class="logo">Ab</span>Angielski<span class="ver" title="Wersja 1.0">1.0</span></div>
+    <button class="menu-btn" id="menu-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="menu">
+      <span class="menu-title" id="menu-title"></span>
+      <span class="burger" aria-hidden="true"><i></i><i></i><i></i></span>
+    </button>
+    <nav class="menu" id="menu" hidden aria-label="Moduły">
+      <button class="menu-item" type="button" data-tab="fiszki"><b>Fiszki</b><span>Zdjęcie, słówko i wymowa</span></button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section id="tab-fiszki" class="tabpanel" aria-label="Fiszki" hidden>
+    <div class="layout">
+      <aside class="panel settings" aria-label="Ustawienia">
+        <h2>Ustawienia</h2>
+        <div class="field">
+          <span class="label">Słówka</span>
+          <div class="seg" id="topic-seg"></div>
+          <p class="hint" id="topic-hint"></p>
+        </div>
+        <div class="field">
+          <span class="label">Co widzę na fiszce?</span>
+          <div class="seg" id="mode-seg">
+            <button type="button" data-v="pic">Zdjęcie</button>
+            <button type="button" data-v="word">Słówko</button>
+            <button type="button" data-v="listen">Posłuchaj</button>
+          </div>
+        </div>
+        <div class="field">
+          <span class="label">Ile fiszek w rundzie?</span>
+          <div class="seg" id="size-seg">
+            <button type="button" data-v="5">5</button>
+            <button type="button" data-v="10">10</button>
+            <button type="button" data-v="all">Wszystkie</button>
+          </div>
+        </div>
+        <div class="field">
+          <span class="label">Czytaj słówka na głos</span>
+          <div class="seg" id="speak-seg">
+            <button type="button" data-v="on">Tak</button>
+            <button type="button" data-v="off">Nie</button>
+          </div>
+        </div>
+        <div class="field">
+          <span class="label">Tłumaczenie po polsku</span>
+          <div class="seg" id="pl-seg">
+            <button type="button" data-v="on">Pokaż</button>
+            <button type="button" data-v="off">Ukryj</button>
+          </div>
+        </div>
+        <div class="field">
+          <button class="btn primary" type="button" id="new-round" style="flex:none;min-height:0;padding:6px 16px;font-size:1.2rem">Nowa runda ↻</button>
+        </div>
+      </aside>
+
+      <div class="stage">
+        <div class="stats">
+          <div class="stat ok"><b id="s-ok">0</b><span>Umiem</span></div>
+          <div class="stat bad"><b id="s-bad">0</b><span>Jeszcze raz</span></div>
+          <div class="stat streak"><b id="s-streak">0</b><span>Seria</span></div>
+          <div class="stat"><b id="s-left">0</b><span>Zostało</span></div>
+        </div>
+
+        <div class="play" id="play">
+          <div class="card" id="card" tabindex="0" role="button" aria-label="Odwróć fiszkę" aria-live="polite">
+            <div class="card-inner">
+              <div class="face front" id="front"></div>
+              <div class="face back" id="back"></div>
+            </div>
+          </div>
+          <div class="actions" id="actions"></div>
+          <p class="kbd-hint" id="kbd-hint"></p>
+        </div>
+
+        <div class="panel summary hidden" id="summary"></div>
+      </div>
+    </div>
+
+    <section class="panel words" aria-label="Moje słówka">
+      <div class="words-head">
+        <h2>Moje słówka</h2>
+        <span class="overall" id="overall"></span>
+      </div>
+      <div id="tiles"></div>
+      <div class="words-foot">
+        <div class="legend">
+          <span><i></i>Jeszcze nie było</span>
+          <span><i style="background:var(--l1)"></i>Do powtórki</span>
+          <span><i style="background:var(--l2)"></i>Uczę się</span>
+          <span><i style="background:var(--l3)"></i>Prawie umiem</span>
+          <span><i style="background:var(--l4)"></i>Umiem!</span>
+        </div>
+        <div id="reset-box"><button class="link" type="button" id="reset">Wyzeruj postęp</button></div>
+      </div>
+    </section>
+  </section>
+</main>
+
+<footer>
+  Angielski 1.0 · kliknij zdjęcie w „Moich słówkach”, żeby usłyszeć słowo · postęp zapisuje się w tej przeglądarce
+  <details class="credits">
+    <summary>Zdjęcia: Wikimedia Commons (autorzy i licencje)</summary>
+    <ul id="credits"></ul>
+  </details>
+</footer>
+<canvas id="confetti"></canvas>
+
+<script>
+// ---------- word list ----------
+const TOPICS = [
+  { id: 'farm', name: 'Na farmie', en: 'Farm animals' },
+  { id: 'baby', name: 'Małe zwierzątka', en: 'Baby animals' },
+];
+const WORDS = [
+  { en: 'sheep', pl: 'owca', topic: 'farm', say: "There's a sheep." },
+  { en: 'duck', pl: 'kaczka', topic: 'farm', say: "There's a duck." },
+  { en: 'cow', pl: 'krowa', topic: 'farm', say: "There's a cow." },
+  { en: 'hen', pl: 'kura', topic: 'farm', say: "There's a hen." },
+  { en: 'horse', pl: 'koń', topic: 'farm', say: "There's a horse." },
+  { en: 'cat', pl: 'kot', topic: 'farm', say: "There's a cat." },
+  { en: 'goat', pl: 'koza', topic: 'farm', say: "There's a goat." },
+  { en: 'dog', pl: 'pies', topic: 'farm', say: "There's a dog." },
+  { en: 'chick', pl: 'kurczątko', topic: 'baby', say: 'A hen has got a chick.' },
+  { en: 'calf', pl: 'cielątko', topic: 'baby', say: 'A cow has got a calf.' },
+  { en: 'foal', pl: 'źrebię', topic: 'baby', say: 'A horse has got a foal.' },
+  { en: 'lamb', pl: 'jagniątko', topic: 'baby', say: 'A sheep has got a lamb.' },
+  { en: 'duckling', pl: 'kaczątko', topic: 'baby', say: 'A duck has got a duckling.' },
+  { en: 'kitten', pl: 'kotek', topic: 'baby', say: 'A cat has got a kitten.' },
+  { en: 'puppy', pl: 'szczeniaczek', topic: 'baby', say: 'A dog has got a puppy.' },
+];
+const img = w => `img/${w.en}.webp`;
+
+// [word, author, licence, licence url, file page]
+const CREDITS = [
+  ["sheep", "Diliff", "CC BY-SA 3.0", "https://creativecommons.org/licenses/by-sa/3.0", "https://commons.wikimedia.org/wiki/File:Swaledale_Sheep,_Lake_District,_England_-_June_2009.jpg"],
+  ["duck", "Paul Danese", "CC BY-SA 4.0", "https://creativecommons.org/licenses/by-sa/4.0", "https://commons.wikimedia.org/wiki/File:20260414_mallards_wethersfield_cove_PD04892.jpg"],
+  ["cow", "Verum", "CC BY-SA 3.0", "https://creativecommons.org/licenses/by-sa/3.0", "https://commons.wikimedia.org/wiki/File:HF_in_der_Rh%C3%B6n_auf_der_Weide.jpg"],
+  ["hen", "Leoadec", "CC BY-SA 3.0", "https://creativecommons.org/licenses/by-sa/3.0", "https://commons.wikimedia.org/wiki/File:Standing_hen.jpeg"],
+  ["horse", "Shadow Ayush", "CC BY-SA 4.0", "https://creativecommons.org/licenses/by-sa/4.0", "https://commons.wikimedia.org/wiki/File:Domestic_horse_at_Suryachaur_and_the_mountains_in_the_back1.jpg"],
+  ["cat", "Trougnouf", "CC BY 4.0", "https://creativecommons.org/licenses/by/4.0", "https://commons.wikimedia.org/wiki/File:Larry_the_cat_sitting_besides_a_wooden_lawn_chair_in_Auderghem,_Belgium_(DSCF2368).jpg"],
+  ["goat", "Wilfredor", "CC0", "https://creativecommons.org/publicdomain/zero/1.0/", "https://commons.wikimedia.org/wiki/File:Capra_aegagrus_hircus_in_isla_Margarita.jpg"],
+  ["dog", "Jakub Hałun", "CC BY-SA 4.0", "https://creativecommons.org/licenses/by-sa/4.0", "https://commons.wikimedia.org/wiki/File:20110425_German_Shepherd_Dog_8505.jpg"],
+  ["chick", "Rektz", "CC BY 4.0", "https://creativecommons.org/licenses/by/4.0", "https://commons.wikimedia.org/wiki/File:Yellow_chicks_on_a_table.jpg"],
+  ["calf", "Basile Morin", "CC BY-SA 4.0", "https://creativecommons.org/licenses/by-sa/4.0", "https://commons.wikimedia.org/wiki/File:Sand_colored_calf_trotting_in_the_countryside_of_Don_Det_Laos.jpg"],
+  ["foal", "Dietmar Rabich", "CC BY-SA 4.0", "https://creativecommons.org/licenses/by-sa/4.0", "https://commons.wikimedia.org/wiki/File:D%C3%BClmen,_Merfeld,_Wildpferdebahn,_D%C3%BClmener_Wildpferde_--_2020_--_7352.jpg"],
+  ["lamb", "Nevit Dilmen", "CC BY-SA 3.0", "https://creativecommons.org/licenses/by-sa/3.0", "https://commons.wikimedia.org/wiki/File:Lamb_09807-a.jpg"],
+  ["duckling", "Trolleymusic (English Wikipedia)", "domena publiczna", "", "https://commons.wikimedia.org/wiki/File:Juvenile_%27pekin%27_duck.jpg"],
+  ["kitten", "0x010C", "CC BY-SA 2.0", "https://creativecommons.org/licenses/by-sa/2.0", "https://commons.wikimedia.org/wiki/File:1-month-old_kittens_32.jpg"],
+  ["puppy", "Richard Bartz", "CC BY-SA 2.5", "https://creativecommons.org/licenses/by-sa/2.5", "https://commons.wikimedia.org/wiki/File:Keeshond_Siberian_Husky_crossbreed_puppy.jpg"],
+];
+
+// ---------- shared: confetti, speech, menu, PWA ----------
+const confetti = (() => {
+  const cv = document.getElementById('confetti'), cx = cv.getContext('2d');
+  let parts = [], raf = 0;
+  function tick() {
+    const d = devicePixelRatio;
+    cx.clearRect(0, 0, cv.width, cv.height);
+    parts = parts.filter(p => p.y < innerHeight + 40 && p.life < 300);
+    for (const p of parts) {
+      p.vy += .35; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.r += p.vr; p.life++;
+      cx.save(); cx.translate(p.x * d, p.y * d); cx.rotate(p.r);
+      cx.fillStyle = p.c; cx.fillRect(-p.s * d / 2, -p.s * d / 4, p.s * d, p.s * d / 2);
+      cx.restore();
+    }
+    raf = parts.length ? requestAnimationFrame(tick) : (cx.clearRect(0, 0, cv.width, cv.height), 0);
+  }
+  return n => {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    cv.width = innerWidth * devicePixelRatio; cv.height = innerHeight * devicePixelRatio;
+    const colors = ['#f4f1e6', '#f7e27a', '#f7a8b8', '#a9edb7', '#a6d8ff', '#ffc48a'];
+    for (let i = 0; i < n; i++) parts.push({
+      x: innerWidth / 2 + (Math.random() - .5) * 200, y: innerHeight * .35,
+      vx: (Math.random() - .5) * 16, vy: -Math.random() * 14 - 4,
+      s: 6 + Math.random() * 6, r: Math.random() * 6, vr: (Math.random() - .5) * .3,
+      c: colors[i % colors.length], life: 0,
+    });
+    if (!raf) raf = requestAnimationFrame(tick);
+  };
+})();
+
+const speech = (() => {
+  const ok = 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
+  let voice = null;
+  function pick() {
+    const vs = speechSynthesis.getVoices().filter(v => /^en[-_]/i.test(v.lang));
+    const gb = vs.filter(v => /GB/i.test(v.lang));
+    voice = gb.find(v => v.localService) || gb[0] || vs.find(v => v.localService) || vs[0] || null;
+  }
+  if (ok) { pick(); speechSynthesis.addEventListener && speechSynthesis.addEventListener('voiceschanged', pick); }
+  return {
+    ok,
+    say(text) {
+      if (!ok) return;
+      try {
+        speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = voice ? voice.lang : 'en-GB';
+        if (voice) u.voice = voice;
+        u.rate = .8;
+        speechSynthesis.speak(u);
+      } catch (e) {}
+    },
+  };
+})();
+
+if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+  addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+}
+
+// ---------- flashcards ----------
+(() => {
+  const $ = id => document.getElementById(id);
+  const LS = 'angielski.fiszki.v1';
+  const DEFAULTS = { topic: 'all', mode: 'pic', size: '10', speak: 'on', pl: 'on' };
+  const PRAISE = ['Brawo!', 'Super!', 'Świetnie!', 'Well done!', 'Great!', 'Ekstra!', 'Tak jest!', 'Good job!'];
+  const SPK = '<svg aria-hidden="true"><use href="#spk"/></svg>';
+
+  let store;
+  try { store = JSON.parse(localStorage.getItem(LS)); } catch (e) {}
+  store = { settings: { ...DEFAULTS, ...(store && store.settings) }, words: (store && store.words) || {} };
+  const save = () => { try { localStorage.setItem(LS, JSON.stringify(store)); } catch (e) {} };
+  const S = store.settings;
+
+  // level: 0 = never seen, 1..4 = box (1 = needs work, 4 = mastered)
+  const level = w => { const r = store.words[w.en]; return r ? r.box + 1 : 0; };
+  const weight = w => [3, 6, 4, 2, 1][level(w)];
+  const eligible = () => WORDS.filter(w => S.topic === 'all' || w.topic === S.topic);
+
+  function sample(list, size) {
+    const pool = list.map(w => ({ w, wt: weight(w) }));
+    const m = size === 'all' ? pool.length : Math.min(+size, pool.length);
+    const out = [];
+    while (out.length < m) {
+      let r = Math.random() * pool.reduce((a, p) => a + p.wt, 0), i = 0;
+      for (; i < pool.length - 1; i++) { r -= pool[i].wt; if (r <= 0) break; }
+      out.push(pool.splice(i, 1)[0].w);
+    }
+    return out;
+  }
+
+  function record(w, ok) {
+    const r = store.words[w.en] || { box: 0, ok: 0, bad: 0 };
+    if (ok) { r.ok++; r.box = store.words[w.en] ? Math.min(3, r.box + 1) : 1; }
+    else { r.bad++; r.box = 0; }
+    store.words[w.en] = r;
+    save();
+  }
+
+  // ---------- round ----------
+  let R = null, phase = 'question', nextTimer = null, interacted = false;
+  addEventListener('pointerdown', () => interacted = true, { once: true, capture: true });
+  addEventListener('keydown', () => interacted = true, { once: true, capture: true });
+
+  function newRound(words) {
+    clearTimeout(nextTimer);
+    const list = words || sample(eligible(), S.size);
+    R = { queue: list.map(w => ({ w, retry: false })), ok: 0, bad: 0, streak: 0, best: 0, mistakes: new Map() };
+    $('summary').classList.add('hidden');
+    $('play').classList.remove('hidden');
+    showCard();
+  }
+
+  const cur = () => R && R.queue[0];
+
+  const photo = w => `<div class="photo"><img src="${img(w)}" alt="${w.pl}" width="640" height="480" decoding="async" draggable="false"></div>`;
+  const plLine = w => S.pl === 'on' ? `<p class="pl">${w.pl}</p>` : '';
+  const sayBtn = (text, cls = '') => `<button class="say ${cls}" type="button" data-say="${text}" aria-label="Posłuchaj: ${text}">${SPK}</button>`;
+
+  function showCard() {
+    const c = cur();
+    phase = 'question';
+    const card = $('card');
+    card.classList.add('instant');
+    card.classList.remove('flipped', 'ok', 'bad');
+    void card.offsetWidth;
+    card.classList.remove('instant');
+    if (!c) return;
+    const w = c.w;
+    const badge = c.retry ? '<span class="badge">Jeszcze raz</span>' : '';
+    if (S.mode === 'pic') {
+      $('front').innerHTML = `${badge}${photo(w)}<p class="prompt">Jak to jest po angielsku?</p>`;
+    } else if (S.mode === 'word') {
+      $('front').innerHTML = `${badge}<p class="word"><u>${w.en}</u>${sayBtn(w.en)}</p><p class="prompt">Co to jest? Powiedz po polsku.</p>`;
+    } else {
+      $('front').innerHTML = `${badge}${sayBtn(w.en, 'big')}<p class="prompt">Posłuchaj. Co to za zwierzątko?</p>`;
+    }
+    $('back').innerHTML = `${photo(w)}<p class="word"><u>${w.en}</u>${sayBtn(w.en)}</p>${plLine(w)}
+      <button class="sentence" type="button" data-say="${w.say}">${SPK}${w.say}</button><p class="fb" id="fb"></p>`;
+    // warm up the next picture
+    const n = R.queue[1]; if (n) new Image().src = img(n.w);
+    if (S.speak === 'on' && interacted && S.mode !== 'pic') setTimeout(() => phase === 'question' && cur() === c && speech.say(w.en), 250);
+    renderControls();
+    renderStats();
+  }
+
+  function btn(label, cls, fn) {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'btn ' + cls; b.textContent = label; b.onclick = fn; return b;
+  }
+
+  function renderControls() {
+    const a = $('actions'); a.innerHTML = '';
+    const hint = $('kbd-hint');
+    if (phase === 'question') {
+      a.append(btn('Odwróć kartę', 'primary', reveal));
+      hint.innerHTML = 'Kliknij kartę albo naciśnij <kbd>Spacja</kbd>';
+    } else if (phase === 'revealed') {
+      a.append(btn('Jeszcze nie', 'bad', () => judge(false)), btn('Umiem!', 'ok', () => judge(true)));
+      hint.innerHTML = '<kbd>←</kbd> jeszcze nie · <kbd>→</kbd> umiem';
+    } else hint.innerHTML = '&nbsp;';
+  }
+
+  function renderStats() {
+    $('s-ok').textContent = R ? R.ok : 0;
+    $('s-bad').textContent = R ? R.bad : 0;
+    $('s-streak').textContent = R ? R.streak : 0;
+    $('s-left').textContent = R ? R.queue.length : 0;
+  }
+
+  function reveal() {
+    if (phase !== 'question' || !cur()) return;
+    phase = 'revealed';
+    $('card').classList.add('flipped');
+    if (S.speak === 'on') speech.say(cur().w.en);
+    renderControls();
+  }
+
+  function judge(ok) {
+    if (phase !== 'revealed') return;
+    const c = cur();
+    if (!c.retry) { record(c.w, ok); if (ok) R.ok++; else R.bad++; }
+    if (ok) { R.streak++; R.best = Math.max(R.best, R.streak); if (R.streak % 5 === 0) confetti(50); }
+    else { R.streak = 0; R.mistakes.set(c.w.en, c.w); }
+    phase = ok ? 'ok' : 'bad';
+    const card = $('card');
+    card.classList.add(ok ? 'ok' : 'bad');
+    $('fb').textContent = ok ? PRAISE[Math.floor(Math.random() * PRAISE.length)] : 'Wróci za chwilę!';
+    if (!ok) { card.classList.add('shake'); setTimeout(() => card.classList.remove('shake'), 450); }
+    renderControls();
+    renderStats();
+    renderTiles();
+    nextTimer = setTimeout(next, ok ? 800 : 1300);
+  }
+
+  function next() {
+    clearTimeout(nextTimer);
+    const c = R.queue.shift();
+    if (phase === 'bad') R.queue.splice(Math.min(3, R.queue.length), 0, { w: c.w, retry: true });
+    if (!R.queue.length) return showSummary();
+    showCard();
+    const card = $('card');
+    card.classList.add('pop'); setTimeout(() => card.classList.remove('pop'), 350);
+  }
+
+  function showSummary() {
+    phase = 'summary';
+    renderStats();
+    const first = R.ok + R.bad;
+    const pct = first ? Math.round(100 * R.ok / first) : 0;
+    const stars = pct >= 90 ? 3 : pct >= 70 ? 2 : pct >= 40 ? 1 : 0;
+    const title = pct === 100 ? 'Perfect!' : pct >= 90 ? 'Brawo! Świetna robota!' : pct >= 70 ? 'Bardzo dobrze!' : pct >= 40 ? 'Nieźle, ćwiczymy dalej!' : 'Spróbuj jeszcze raz, będzie lepiej!';
+    const mistakes = [...R.mistakes.values()];
+    const el = $('summary');
+    el.innerHTML = `
+      <h2>${title}</h2>
+      <div class="stars">${[0, 1, 2].map(i => `<span class="${i < stars ? '' : 'off'}">★</span>`).join('')}</div>
+      <div class="big-score">${R.ok} z ${first} od razu dobrze · najdłuższa seria: ${R.best}</div>
+      ${mistakes.length ? `<p class="prompt">Te słówka warto powtórzyć:</p>
+        <div class="mistakes">${mistakes.map(w => `<button type="button" data-say="${w.en}">${w.en}</button>`).join('')}</div>` : ''}
+      <div class="actions"></div>`;
+    const a = el.querySelector('.actions');
+    if (mistakes.length) a.append(btn('Powtórz trudne', 'bad', () => newRound(mistakes)));
+    a.append(btn('Nowa runda ↻', 'primary', () => newRound()));
+    $('play').classList.add('hidden');
+    el.classList.remove('hidden');
+    renderTiles();
+    if (stars >= 2) confetti(stars === 3 ? 160 : 80);
+  }
+
+  // ---------- input ----------
+  document.addEventListener('click', e => {
+    const s = e.target.closest('[data-say]');
+    if (s) { e.stopPropagation(); speech.say(s.dataset.say); }
+  }, true);
+  $('card').addEventListener('click', e => { if (!e.target.closest('[data-say]')) reveal(); });
+  document.addEventListener('keydown', e => {
+    if ($('tab-fiszki').hidden || e.ctrlKey || e.metaKey || e.altKey) return;
+    if (e.target.closest && e.target.closest('button') && (e.key === ' ' || e.key === 'Enter')) return;
+    if (phase === 'summary') { if (e.key === 'Enter') newRound(); return; }
+    if ((e.key === ' ' || e.key === 'Enter') && phase === 'question') { e.preventDefault(); reveal(); }
+    else if (e.key === 'ArrowRight') judge(true);
+    else if (e.key === 'ArrowLeft') judge(false);
+  });
+
+  // ---------- settings ----------
+  $('topic-seg').innerHTML = [...TOPICS.map(t => [t.id, t.name]), ['all', 'Wszystkie']]
+    .map(([v, l]) => `<button type="button" data-v="${v}">${l}</button>`).join('');
+  const segs = { 'topic-seg': 'topic', 'mode-seg': 'mode', 'size-seg': 'size', 'speak-seg': 'speak', 'pl-seg': 'pl' };
+  function renderSettings() {
+    for (const [id, k] of Object.entries(segs))
+      $(id).querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === S[k])));
+    const n = eligible().length;
+    $('topic-hint').textContent = `${n} ${n === 1 ? 'słówko' : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 'słówka' : 'słówek'}`;
+  }
+  for (const [id, k] of Object.entries(segs))
+    $(id).querySelectorAll('button').forEach(b => b.onclick = () => {
+      S[k] = b.dataset.v; save(); renderSettings();
+      if (k === 'pl' && phase !== 'summary' && cur()) { const p = $('back').querySelector('.pl'); if (p) p.hidden = S.pl !== 'on'; else if (S.pl === 'on') showCard(); }
+      else if (k !== 'speak' && k !== 'pl') newRound();
+    });
+  $('new-round').onclick = () => newRound();
+
+  // ---------- my words ----------
+  function renderTiles() {
+    let html = '', mastered = 0;
+    for (const t of TOPICS) {
+      html += `<p class="topic-title">${t.name} · <i>${t.en}</i></p><div class="tiles">`;
+      for (const w of WORDS.filter(w => w.topic === t.id)) {
+        const lv = level(w); if (lv === 4) mastered++;
+        html += `<button class="tile l${lv}" type="button" data-say="${w.en}" aria-label="${w.en}, ${w.pl}"><img src="${img(w)}" alt="" loading="lazy" width="640" height="480"><span>${w.en}</span></button>`;
+      }
+      html += '</div>';
+    }
+    $('tiles').innerHTML = html;
+    $('overall').textContent = `Umiem ${mastered} z ${WORDS.length}`;
+  }
+  function resetPrompt() {
+    const box = $('reset-box');
+    box.innerHTML = '<span class="confirm">Na pewno wyzerować? <button class="btn bad" type="button" id="reset-yes">Tak</button><button class="btn" type="button" id="reset-no">Nie</button></span>';
+    $('reset-yes').onclick = () => { store.words = {}; save(); renderTiles(); restore(); };
+    $('reset-no').onclick = restore;
+  }
+  function restore() { $('reset-box').innerHTML = '<button class="link" type="button" id="reset">Wyzeruj postęp</button>'; $('reset').onclick = resetPrompt; }
+  $('reset').onclick = resetPrompt;
+
+  $('credits').innerHTML = CREDITS.map(([w, a, l, lu, p]) =>
+    `<li><a href="${p}" target="_blank" rel="noopener">${w}</a>: ${a}, ${lu ? `<a href="${lu}" target="_blank" rel="noopener">${l}</a>` : l}</li>`).join('') +
+    '<li>Zdjęcia przycięte i zmniejszone.</li>';
+
+  renderSettings();
+  renderTiles();
+  newRound();
+})();
+
+// ---------- menu (burger) ----------
+(() => {
+  const btn = document.getElementById('menu-btn'), menu = document.getElementById('menu');
+  const items = [...menu.querySelectorAll('.menu-item')];
+  const open = show => { menu.hidden = !show; btn.setAttribute('aria-expanded', String(show)); };
+  function showTab(name) {
+    if (!document.getElementById('tab-' + name)) name = 'fiszki';
+    document.querySelectorAll('.tabpanel').forEach(p => p.hidden = p.id !== 'tab-' + name);
+    items.forEach(i => i.setAttribute('aria-current', String(i.dataset.tab === name)));
+    document.getElementById('menu-title').textContent = items.find(i => i.dataset.tab === name).querySelector('b').textContent;
+    try { localStorage.setItem('angielski.tab', name); } catch (e) {}
+  }
+  btn.onclick = e => { e.stopPropagation(); open(menu.hidden); };
+  items.forEach(i => i.onclick = () => { showTab(i.dataset.tab); open(false); scrollTo(0, 0); });
+  document.addEventListener('click', e => { if (!menu.hidden && !menu.contains(e.target)) open(false); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !menu.hidden) { open(false); btn.focus(); } }, true);
+  let start = 'fiszki';
+  try { start = localStorage.getItem('angielski.tab') || 'fiszki'; } catch (e) {}
+  showTab(start);
+})();
+</script>
+</body>
+</html>
