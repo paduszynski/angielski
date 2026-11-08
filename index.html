@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Angielski – fiszki dla dzieci</title>
-<meta name="version" content="1.2">
+<meta name="version" content="1.3">
 <meta name="description" content="Angielski – fiszki ze zdjęciami i wymową dla dzieci z 2 klasy: zwierzęta na farmie i małe zwierzątka.">
 <meta name="theme-color" content="#2c5440">
 <link rel="manifest" href="manifest.webmanifest">
@@ -219,7 +219,7 @@ footer{color:var(--chalk-soft);text-align:center;font-size:1rem;padding:8px 14px
 
 <header class="top">
   <div class="wrap">
-    <div class="brand chalk"><span class="logo">Ab</span>Angielski<span class="ver" title="Wersja 1.2">1.2</span></div>
+    <div class="brand chalk"><span class="logo">Ab</span>Angielski<span class="ver" title="Wersja 1.3">1.3</span></div>
     <button class="menu-btn" id="menu-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="menu">
       <span class="menu-title" id="menu-title"></span>
       <span class="burger" aria-hidden="true"><i></i><i></i><i></i></span>
@@ -360,15 +360,15 @@ const CREDITS = [
   ["hen", "Leoadec", "CC BY-SA 3.0", "https://creativecommons.org/licenses/by-sa/3.0", "https://commons.wikimedia.org/wiki/File:Standing_hen.jpeg"],
   ["horse", "Shadow Ayush", "CC BY-SA 4.0", "https://creativecommons.org/licenses/by-sa/4.0", "https://commons.wikimedia.org/wiki/File:Domestic_horse_at_Suryachaur_and_the_mountains_in_the_back1.jpg"],
   ["cat", "Trougnouf", "CC BY 4.0", "https://creativecommons.org/licenses/by/4.0", "https://commons.wikimedia.org/wiki/File:Larry_the_cat_sitting_besides_a_wooden_lawn_chair_in_Auderghem,_Belgium_(DSCF2368).jpg"],
-  ["goat", "Wilfredor", "CC0", "https://creativecommons.org/publicdomain/zero/1.0/", "https://commons.wikimedia.org/wiki/File:Capra_aegagrus_hircus_in_isla_Margarita.jpg"],
+  ["goat", "Dirk Beyer", "CC BY-SA 3.0", "https://creativecommons.org/licenses/by-sa/3.0", "https://commons.wikimedia.org/wiki/File:Gorge_du_Verdon_Goat_0254.jpg"],
   ["dog", "Jakub Hałun", "CC BY-SA 4.0", "https://creativecommons.org/licenses/by-sa/4.0", "https://commons.wikimedia.org/wiki/File:20110425_German_Shepherd_Dog_8505.jpg"],
-  ["chick", "Rektz", "CC BY 4.0", "https://creativecommons.org/licenses/by/4.0", "https://commons.wikimedia.org/wiki/File:Yellow_chicks_on_a_table.jpg"],
-  ["calf", "Basile Morin", "CC BY-SA 4.0", "https://creativecommons.org/licenses/by-sa/4.0", "https://commons.wikimedia.org/wiki/File:Sand_colored_calf_trotting_in_the_countryside_of_Don_Det_Laos.jpg"],
-  ["foal", "Dietmar Rabich", "CC BY-SA 4.0", "https://creativecommons.org/licenses/by-sa/4.0", "https://commons.wikimedia.org/wiki/File:D%C3%BClmen,_Merfeld,_Wildpferdebahn,_D%C3%BClmener_Wildpferde_--_2020_--_7352.jpg"],
-  ["lamb", "Nevit Dilmen", "CC BY-SA 3.0", "https://creativecommons.org/licenses/by-sa/3.0", "https://commons.wikimedia.org/wiki/File:Lamb_09807-a.jpg"],
-  ["duckling", "Trolleymusic (English Wikipedia)", "domena publiczna", "", "https://commons.wikimedia.org/wiki/File:Juvenile_%27pekin%27_duck.jpg"],
-  ["kitten", "0x010C", "CC BY-SA 2.0", "https://creativecommons.org/licenses/by-sa/2.0", "https://commons.wikimedia.org/wiki/File:1-month-old_kittens_32.jpg"],
-  ["puppy", "Richard Bartz", "CC BY-SA 2.5", "https://creativecommons.org/licenses/by-sa/2.5", "https://commons.wikimedia.org/wiki/File:Keeshond_Siberian_Husky_crossbreed_puppy.jpg"],
+  ["chick", "Yann", "CC BY-SA 4.0", "https://creativecommons.org/licenses/by-sa/4.0", "https://commons.wikimedia.org/wiki/File:Hen_with_chicks,_Raisen_district,_MP,_India.jpg"],
+  ["calf", "Derek Harper", "CC BY-SA 2.0", "https://creativecommons.org/licenses/by-sa/2.0", "https://commons.wikimedia.org/wiki/File:Cow_and_calf_near_Water_Lane_-_geograph.org.uk_-_7961197.jpg"],
+  ["foal", "ImagePerson", "CC BY 4.0", "https://creativecommons.org/licenses/by/4.0", "https://commons.wikimedia.org/wiki/File:Iceland_Horses_Mare_and_Foal_9244.jpg"],
+  ["lamb", "Romaniviatores", "CC BY-SA 4.0", "https://creativecommons.org/licenses/by-sa/4.0", "https://commons.wikimedia.org/wiki/File:06_Ewe_with_her_two_lambs_in_Wester_Ross_by_Romaniviatores.jpg"],
+  ["duckling", "Christine Matthews", "CC BY-SA 2.0", "https://creativecommons.org/licenses/by-sa/2.0", "https://commons.wikimedia.org/wiki/File:Mandarin_Duck_with_Ducklings_-_geograph.org.uk_-_7899938.jpg"],
+  ["kitten", "Haoreima", "CC0", "https://creativecommons.org/publicdomain/zero/1.0/", "https://commons.wikimedia.org/wiki/File:A_mother_and_her_little_newly_born_baby_kitten_of_the_Meitei_domestic_cat_breed_(Meitei_house_cat_variety).jpg"],
+  ["puppy", "Basile Morin", "CC BY-SA 4.0", "https://creativecommons.org/licenses/by-sa/4.0", "https://commons.wikimedia.org/wiki/File:White_dog_sleeping_on_the_floor_with_puppies_after_nursing_in_Don_Det_Laos.jpg"],
 ];
 
 // ---------- shared: confetti, speech, menu, PWA ----------

@@ -1,5 +1,5 @@
 // Angielski service worker: works offline, always tries the network first for the app itself.
-const CACHE = 'angielski-1.2';
+const CACHE = 'angielski-1.3';
 const ASSETS = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png', './icons/maskable-512.png', './icons/apple-touch-icon.png',
   './img/calf.webp','./img/cat.webp','./img/chick.webp','./img/cow.webp','./img/dog.webp','./img/duckling.webp','./img/duck.webp','./img/foal.webp','./img/goat.webp','./img/hen.webp','./img/horse.webp','./img/kitten.webp','./img/lamb.webp','./img/puppy.webp','./img/sheep.webp'];
 
