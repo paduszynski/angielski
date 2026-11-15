@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Angielski – fiszki dla dzieci</title>
-<meta name="version" content="1.4">
+<meta name="version" content="1.5">
 <meta name="description" content="Angielski – fiszki ze zdjęciami i wymową dla dzieci z 2 klasy: zwierzęta na farmie i małe zwierzątka.">
 <meta name="theme-color" content="#2c5440">
 <link rel="manifest" href="manifest.webmanifest">
@@ -237,7 +237,7 @@ footer{color:var(--chalk-soft);text-align:center;font-size:1rem;padding:8px 14px
 
 <header class="top">
   <div class="wrap">
-    <div class="brand chalk"><span class="logo">Ab</span>Angielski<span class="ver" title="Wersja 1.4">1.4</span></div>
+    <div class="brand chalk"><span class="logo">Ab</span>Angielski<span class="ver" title="Wersja 1.5">1.5</span></div>
     <span class="wallet" id="wallet"></span>
     <button class="menu-btn" id="menu-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="menu">
       <span class="menu-title" id="menu-title"></span>
@@ -339,7 +339,7 @@ footer{color:var(--chalk-soft);text-align:center;font-size:1rem;padding:8px 14px
 </main>
 
 <footer>
-  Angielski 1.4 · kliknij zdjęcie w „Moich słówkach”, żeby usłyszeć słowo · postęp zapisuje się w tej przeglądarce
+  Angielski 1.5 · kliknij zdjęcie w „Moich słówkach”, żeby usłyszeć słowo · postęp zapisuje się w tej przeglądarce
   <details class="credits">
     <summary>Zdjęcia: Wikimedia Commons (autorzy i licencje)</summary>
     <ul id="credits"></ul>
@@ -515,9 +515,10 @@ if ('serviceWorker' in navigator && location.protocol !== 'file:') {
   const plLine = w => S.pl === 'on' ? `<p class="pl">${w.pl}</p>` : '';
   const sayBtn = (text, cls = '') => `<button class="say ${cls}" type="button" data-say="${text}" aria-label="Posłuchaj: ${text}">${SPK}</button>`;
 
+  let shownAt = 0; // when the current card appeared; "Umiem!" faster than 0.5 s earns no stars
   function showCard() {
     const c = cur();
-    phase = 'question';
+    phase = 'question'; shownAt = performance.now();
     const card = $('card');
     card.classList.add('instant');
     card.classList.remove('flipped', 'ok', 'bad');
@@ -580,7 +581,9 @@ if ('serviceWorker' in navigator && location.protocol !== 'file:') {
     if (!c.retry) { record(c.w, ok); if (ok) R.ok++; else R.bad++; }
     // stars: only here, after the child says Umiem / Jeszcze nie (flipping the card alone never scores);
     // the phase guard above makes each card score once
-    if (STARS) { if (!ok) STARS.wrong(); else if (c.retry) STARS.retry(); else STARS.correct(); }
+    // a right answer tapped less than 0.5 s after the card appeared earns nothing (Pawel's call: no other limits)
+    const tooFast = performance.now() - shownAt < 500;
+    if (STARS) { if (!ok) STARS.wrong(); else if (tooFast) {} else if (c.retry) STARS.retry(); else STARS.correct(); }
     if (ok) { R.streak++; R.best = Math.max(R.best, R.streak); if (R.streak % 5 === 0) confetti(50); }
     else { R.streak = 0; R.mistakes.set(c.w.en, c.w); }
     phase = ok ? 'ok' : 'bad';
