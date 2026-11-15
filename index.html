@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Angielski – fiszki dla dzieci</title>
-<meta name="version" content="1.9">
+<meta name="version" content="1.10">
 <meta name="description" content="Angielski – fiszki ze zdjęciami i wymową dla dzieci z 2 klasy: zwierzęta na farmie i małe zwierzątka.">
 <meta name="theme-color" content="#2c5440">
 <link rel="manifest" href="manifest.webmanifest">
@@ -150,6 +150,7 @@ main{padding:12px 0 28px}
 .word{margin:0;font-size:clamp(2.8rem,13vw,4.4rem);line-height:1;display:flex;align-items:center;gap:14px;text-shadow:0 0 1px rgba(244,241,230,.5)}
 .word u{text-decoration:underline wavy var(--yellow) 2px;text-underline-offset:12px;text-decoration-skip-ink:none}
 .pl{margin:0;font-size:1.35rem;color:var(--chalk-soft)}
+.pl[hidden]{display:none}
 .sentence{margin:0;border:0;background:transparent;font-size:1.15rem;color:var(--blue);padding:2px 6px;display:flex;align-items:center;gap:6px}
 .fb{margin:0;font-size:1.5rem;min-height:1.2em}
 .card.ok .fb{color:var(--green)} .card.bad .fb{color:var(--pink)}
@@ -237,7 +238,7 @@ footer{color:var(--chalk-soft);text-align:center;font-size:1rem;padding:8px 14px
 
 <header class="top">
   <div class="wrap">
-    <div class="brand chalk"><span class="logo">Ab</span>Angielski<span class="ver" title="Wersja 1.9">1.9</span></div>
+    <div class="brand chalk"><span class="logo">Ab</span>Angielski<span class="ver" title="Wersja 1.10">1.10</span></div>
     <span class="wallet" id="wallet"></span>
     <button class="menu-btn" id="menu-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="menu">
       <span class="menu-title" id="menu-title"></span>
@@ -339,7 +340,7 @@ footer{color:var(--chalk-soft);text-align:center;font-size:1rem;padding:8px 14px
 </main>
 
 <footer>
-  Angielski 1.9 · kliknij zdjęcie w „Moich słówkach”, żeby usłyszeć słowo · postęp zapisuje się w tej przeglądarce
+  Angielski 1.10 · kliknij zdjęcie w „Moich słówkach”, żeby usłyszeć słowo · postęp zapisuje się w tej przeglądarce
   <details class="credits">
     <summary>Zdjęcia: Wikimedia Commons (autorzy i licencje)</summary>
     <ul id="credits"></ul>
@@ -503,7 +504,8 @@ if ('serviceWorker' in navigator && location.protocol !== 'file:') {
     clearTimeout(nextTimer);
     const list = words || sample(eligible(), S.size);
     STARS && STARS.newSet(); // a round left unfinished (settings changed, Nowa runda) gets no set bonus
-    R = { queue: list.map(w => ({ w, retry: false })), ok: 0, bad: 0, streak: 0, best: 0, mistakes: new Map(), done: false };
+    // review = "Powtórz trudne": every word was missed before, so right answers pay retry points and no set bonus
+    R = { queue: list.map(w => ({ w, retry: false })), ok: 0, bad: 0, streak: 0, best: 0, mistakes: new Map(), done: false, review: !!words };
     $('summary').classList.add('hidden');
     $('play').classList.remove('hidden');
     showCard();
@@ -512,7 +514,8 @@ if ('serviceWorker' in navigator && location.protocol !== 'file:') {
   const cur = () => R && R.queue[0];
 
   const photo = w => `<div class="photo"><img src="${img(w)}" alt="${w.pl}" width="640" height="480" decoding="async" draggable="false"></div>`;
-  const plLine = w => S.pl === 'on' ? `<p class="pl">${w.pl}</p>` : '';
+  // always rendered; the Tłumaczenie toggle only flips hidden, so it never re-renders a card mid-answer
+  const plLine = w => `<p class="pl"${S.pl === 'on' ? '' : ' hidden'}>${w.pl}</p>`;
   const sayBtn = (text, cls = '') => `<button class="say ${cls}" type="button" data-say="${text}" aria-label="Posłuchaj: ${text}">${SPK}</button>`;
 
   let shownAt = 0; // when the current card appeared; "Umiem!" faster than 0.5 s earns no stars
@@ -583,7 +586,7 @@ if ('serviceWorker' in navigator && location.protocol !== 'file:') {
     // the phase guard above makes each card score once
     // a right answer tapped less than 0.5 s after the card appeared earns nothing (Pawel's call: no other limits)
     const tooFast = performance.now() - shownAt < 500;
-    if (STARS) { if (!ok) STARS.wrong(); else if (tooFast) {} else if (c.retry) STARS.retry(); else STARS.correct(); }
+    if (STARS) { if (!ok) STARS.wrong(); else if (tooFast) {} else if (c.retry || R.review) STARS.retry(); else STARS.correct(); }
     if (ok) { R.streak++; R.best = Math.max(R.best, R.streak); if (R.streak % 5 === 0) confetti(50); }
     else { R.streak = 0; R.mistakes.set(c.w.en, c.w); }
     phase = ok ? 'ok' : 'bad';
@@ -609,7 +612,8 @@ if ('serviceWorker' in navigator && location.protocol !== 'file:') {
 
   function showSummary() {
     phase = 'summary';
-    if (!R.done) { R.done = true; STARS && STARS.setDone(); }
+    // a "Powtórz trudne" round continues a set that already got its bonus: it never counts as a finished set
+    if (!R.done) { R.done = true; STARS && (R.review ? STARS.newSet() : STARS.setDone()); }
     renderStats();
     const first = R.ok + R.bad;
     const pct = first ? Math.round(100 * R.ok / first) : 0;
@@ -661,7 +665,7 @@ if ('serviceWorker' in navigator && location.protocol !== 'file:') {
   for (const [id, k] of Object.entries(segs))
     $(id).querySelectorAll('button').forEach(b => b.onclick = () => {
       S[k] = b.dataset.v; save(); renderSettings();
-      if (k === 'pl' && phase !== 'summary' && cur()) { const p = $('back').querySelector('.pl'); if (p) p.hidden = S.pl !== 'on'; else if (S.pl === 'on') showCard(); }
+      if (k === 'pl') { const p = $('back').querySelector('.pl'); if (p) p.hidden = S.pl !== 'on'; }
       else if (k !== 'speak' && k !== 'pl') newRound();
     });
   $('new-round').onclick = () => newRound();
