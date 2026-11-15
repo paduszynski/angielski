@@ -1,6 +1,6 @@
 // Angielski service worker: works offline, always tries the network first for the app itself.
-const CACHE = 'angielski-1.3';
-const ASSETS = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png', './icons/maskable-512.png', './icons/apple-touch-icon.png',
+const CACHE = 'angielski-1.4';
+const ASSETS = ['./', './index.html', './manifest.webmanifest', './skarbonka.js', './icons/icon-192.png', './icons/icon-512.png', './icons/maskable-512.png', './icons/apple-touch-icon.png',
   './img/calf.webp','./img/cat.webp','./img/chick.webp','./img/cow.webp','./img/dog.webp','./img/duckling.webp','./img/duck.webp','./img/foal.webp','./img/goat.webp','./img/hen.webp','./img/horse.webp','./img/kitten.webp','./img/lamb.webp','./img/puppy.webp','./img/sheep.webp'];
 
 self.addEventListener('install', e => {
@@ -9,7 +9,8 @@ self.addEventListener('install', e => {
 
 self.addEventListener('activate', e => {
   e.waitUntil(caches.keys()
-    .then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k))))
+    // Cache Storage is shared by every app on this origin: only drop our own old caches
+    .then(keys => Promise.all(keys.filter(k => k.startsWith('angielski-') && k !== CACHE).map(k => caches.delete(k))))
     .then(() => self.clients.claim()));
 });
 

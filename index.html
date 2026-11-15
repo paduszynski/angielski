@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Angielski – fiszki dla dzieci</title>
-<meta name="version" content="1.3">
+<meta name="version" content="1.4">
 <meta name="description" content="Angielski – fiszki ze zdjęciami i wymową dla dzieci z 2 klasy: zwierzęta na farmie i małe zwierzątka.">
 <meta name="theme-color" content="#2c5440">
 <link rel="manifest" href="manifest.webmanifest">
@@ -71,7 +71,25 @@ header .wrap{display:flex;align-items:center;gap:12px;min-height:58px;padding-bl
 .menu-item b{font-weight:400;font-size:1.35rem;line-height:1.1}
 .menu-item span{color:var(--chalk-soft);font-size:1rem}
 .menu-item:hover{background:rgba(255,255,255,.06)}
+a.menu-item{color:inherit;text-decoration:none}
 .menu-item[aria-current="true"] b{color:var(--yellow)}
+
+/* star wallet pill (skarbonka.js), drawn in chalk on the board */
+.wallet{margin-left:auto;display:flex;min-width:0}
+.wallet + .menu-btn{margin-left:0}
+header.top .skb{--skb-star:var(--yellow);--skb-lvl:var(--green);--skb-ln-fg:var(--board-deep);--skb-bg:transparent;--skb-ink:var(--chalk);
+  border:2px solid var(--chalk);border-radius:12px 9px 13px 8px;gap:6px;padding:5px 9px 5px 7px;font-size:1.1rem;text-shadow:0 0 1px rgba(244,241,230,.45)}
+header.top .skb .skb-bar{width:28px;height:6px;background:var(--chalk-dim)}
+header.top .skb .skb-fl{color:var(--orange)}
+body .skb-fly{color:var(--yellow);text-shadow:0 2px 0 var(--board-deep),0 0 10px rgba(0,0,0,.5);font-size:34px}
+body .skb-fly small{color:var(--chalk);font-size:17px}
+/* phones: the pill (which grows with the 🔥 streak) gets its own chalk line under the brand, so the header never jumps or overflows */
+@media (max-width:639px){
+  header .wrap{flex-wrap:wrap;row-gap:2px;padding-bottom:8px}
+  .wallet{order:3;flex-basis:100%;justify-content:center;margin-left:0}
+  .wallet + .menu-btn{margin-left:auto}
+  header.top .skb{font-size:1.05rem;padding-block:4px}
+}
 
 main{padding:12px 0 28px}
 
@@ -219,13 +237,15 @@ footer{color:var(--chalk-soft);text-align:center;font-size:1rem;padding:8px 14px
 
 <header class="top">
   <div class="wrap">
-    <div class="brand chalk"><span class="logo">Ab</span>Angielski<span class="ver" title="Wersja 1.3">1.3</span></div>
+    <div class="brand chalk"><span class="logo">Ab</span>Angielski<span class="ver" title="Wersja 1.4">1.4</span></div>
+    <span class="wallet" id="wallet"></span>
     <button class="menu-btn" id="menu-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="menu">
       <span class="menu-title" id="menu-title"></span>
       <span class="burger" aria-hidden="true"><i></i><i></i><i></i></span>
     </button>
     <nav class="menu" id="menu" hidden aria-label="Moduły">
       <button class="menu-item" type="button" data-tab="fiszki"><b>Fiszki</b><span>Zdjęcie, słówko i wymowa</span></button>
+      <a class="menu-item" href="/naukagry/"><b>Gry ★</b><span>Wydaj gwiazdki na gry</span></a>
     </nav>
   </div>
 </header>
@@ -319,7 +339,7 @@ footer{color:var(--chalk-soft);text-align:center;font-size:1rem;padding:8px 14px
 </main>
 
 <footer>
-  Angielski 1.1 · kliknij zdjęcie w „Moich słówkach”, żeby usłyszeć słowo · postęp zapisuje się w tej przeglądarce
+  Angielski 1.4 · kliknij zdjęcie w „Moich słówkach”, żeby usłyszeć słowo · postęp zapisuje się w tej przeglądarce
   <details class="credits">
     <summary>Zdjęcia: Wikimedia Commons (autorzy i licencje)</summary>
     <ul id="credits"></ul>
@@ -327,7 +347,12 @@ footer{color:var(--chalk-soft);text-align:center;font-size:1rem;padding:8px 14px
 </footer>
 <canvas id="confetti"></canvas>
 
+<script src="skarbonka.js"></script>
 <script>
+// ---------- star wallet (shared with Matma, Polski and the games at /naukagry/) ----------
+const STARS = window.Skarbonka ? Skarbonka.session('angielski') : null;
+if (window.Skarbonka) Skarbonka.mountBadge(document.getElementById('wallet'), { session: STARS });
+
 // ---------- word list ----------
 const TOPICS = [
   { id: 'farm', name: 'Na farmie', en: 'Farm animals' },
@@ -477,7 +502,8 @@ if ('serviceWorker' in navigator && location.protocol !== 'file:') {
   function newRound(words) {
     clearTimeout(nextTimer);
     const list = words || sample(eligible(), S.size);
-    R = { queue: list.map(w => ({ w, retry: false })), ok: 0, bad: 0, streak: 0, best: 0, mistakes: new Map() };
+    STARS && STARS.newSet(); // a round left unfinished (settings changed, Nowa runda) gets no set bonus
+    R = { queue: list.map(w => ({ w, retry: false })), ok: 0, bad: 0, streak: 0, best: 0, mistakes: new Map(), done: false };
     $('summary').classList.add('hidden');
     $('play').classList.remove('hidden');
     showCard();
@@ -552,6 +578,9 @@ if ('serviceWorker' in navigator && location.protocol !== 'file:') {
     if (phase !== 'revealed') return;
     const c = cur();
     if (!c.retry) { record(c.w, ok); if (ok) R.ok++; else R.bad++; }
+    // stars: only here, after the child says Umiem / Jeszcze nie (flipping the card alone never scores);
+    // the phase guard above makes each card score once
+    if (STARS) { if (!ok) STARS.wrong(); else if (c.retry) STARS.retry(); else STARS.correct(); }
     if (ok) { R.streak++; R.best = Math.max(R.best, R.streak); if (R.streak % 5 === 0) confetti(50); }
     else { R.streak = 0; R.mistakes.set(c.w.en, c.w); }
     phase = ok ? 'ok' : 'bad';
@@ -577,6 +606,7 @@ if ('serviceWorker' in navigator && location.protocol !== 'file:') {
 
   function showSummary() {
     phase = 'summary';
+    if (!R.done) { R.done = true; STARS && STARS.setDone(); }
     renderStats();
     const first = R.ok + R.bad;
     const pct = first ? Math.round(100 * R.ok / first) : 0;
@@ -668,7 +698,7 @@ if ('serviceWorker' in navigator && location.protocol !== 'file:') {
 // ---------- menu (burger) ----------
 (() => {
   const btn = document.getElementById('menu-btn'), menu = document.getElementById('menu');
-  const items = [...menu.querySelectorAll('.menu-item')];
+  const items = [...menu.querySelectorAll('.menu-item[data-tab]')];
   const open = show => { menu.hidden = !show; btn.setAttribute('aria-expanded', String(show)); };
   function showTab(name) {
     if (!document.getElementById('tab-' + name)) name = 'fiszki';
